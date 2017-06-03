@@ -1,5 +1,6 @@
 #!/usr/local/bin/python
 # coding: utf-8
+
 import logging
 from telegram.ext import Updater, CommandHandler, MessageHandler, Filters
 import settings
@@ -11,7 +12,7 @@ logging.basicConfig(format = '%(asctime)s - %(name)s - %(levelname)s - %(message
 
 def start_bot(bot, update):
     welcome = "Привет, {}! Я непростой бот, но понимаю только команду {}".format(update.message.chat.first_name,'/start')
-
+    logging.info('Пользователь {} нажал /start'.format(update.message.chat.username))
     update.message.reply_text(welcome)
 
 def chat(bot, update):
