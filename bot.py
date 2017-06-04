@@ -36,7 +36,7 @@ def planet_bot(bot, update, args):
         try:
             planet = getattr(ephem, planet_name)()
         except (AttributeError, NameError):
-            update.message.reply_text('Please, enter the correct name of the planet. Ex.: Moon, Earth, Mars etc.')
+            update.message.reply_text('Please, enter the correct name of the planet. Ex.: Moon, Jupiter, Mars etc.')
         planet.compute(today)
         planet_constellation = ''.join(ephem.constellation(planet)[1])
         update.message.reply_text('Today {} is in {}.'.format(planet_name, planet_constellation))
