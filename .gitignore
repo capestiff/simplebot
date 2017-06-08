@@ -3,4 +3,5 @@
 *.sublime-project
 *.sublime-workspace
 __pycache__/
+pyephem-cp36/
 settings.py
