@@ -18,7 +18,8 @@ custom_keyboard = [[KeyboardButton('7'), KeyboardButton('8'), KeyboardButton('9'
                    [KeyboardButton('.'), KeyboardButton('0'), KeyboardButton('/'), KeyboardButton('=')]]
 
 def start_bot(bot, update):
-    welcome = 'Hi, {}! I understand the commands: {}, {}, {}. Also I can work like a calculator ({}) with integers and float numbers (enter for example 3.0+3=).'.format(update.message.chat.first_name,
+    welcome = '''Hi, {}! I understand the commands: {}, {}, {}. Also I can work like a calculator ({}) with integers 
+    and float numbers (enter for example 3.0+3=).'''.format(update.message.chat.first_name, 
         '/start','/wordcount', '/planet', '/showcalc')
     logging.info('User {} selected /start'.format(update.message.chat.username))
     update.message.reply_text(welcome)
@@ -83,6 +84,7 @@ def calc_reply(bot, update, user_expression):
                 update.message.reply_text('I cannot divide by zero. Try another number.')
             else:
                 update.message.reply_text(first_number / second_number)
+
 def keyboard(bot, update):
 
     reply_markup = ReplyKeyboardMarkup(custom_keyboard)
@@ -95,11 +97,11 @@ def kb_hide(bot, update):
     bot.sendMessage(update.message.chat_id, 'To open the keyboard again enter /showcalc',reply_markup = reply_markup)
 
 def main():
-    upd.dispatcher.add_handler(CommandHandler("start", start_bot))
-    upd.dispatcher.add_handler(CommandHandler("wordcount", wordcount_bot, pass_args=True))
-    upd.dispatcher.add_handler(CommandHandler("planet", planet_bot, pass_args=True))
-    upd.dispatcher.add_handler(CommandHandler("showcalc", keyboard))
-    upd.dispatcher.add_handler(CommandHandler("hidecalc", kb_hide))
+    upd.dispatcher.add_handler(CommandHandler('start', start_bot))
+    upd.dispatcher.add_handler(CommandHandler('wordcount', wordcount_bot, pass_args=True))
+    upd.dispatcher.add_handler(CommandHandler('planet', planet_bot, pass_args=True))
+    upd.dispatcher.add_handler(CommandHandler('showcalc', keyboard))
+    upd.dispatcher.add_handler(CommandHandler('hidecalc', kb_hide))
     upd.dispatcher.add_handler(RegexHandler(r'\d+\.?\d*\D\d+\.?\d*=', calc))
     upd.dispatcher.add_handler(RegexHandler(r'/|\d|\+|\*|-|=|\.', button_calc))
     
@@ -110,4 +112,3 @@ def main():
 if __name__ == "__main__":
     logging.info('Bot started.')
     main()
-
