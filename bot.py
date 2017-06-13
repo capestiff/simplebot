@@ -20,9 +20,9 @@ custom_keyboard = [[KeyboardButton('7'), KeyboardButton('8'), KeyboardButton('9'
 
 def start_bot(bot, update):
     welcome = '''Hi, {}! I understand the commands: {}, {}, {}. Also I can work like a calculator ({}) with integers 
-    and float numbers (enter for example 3.0+3=). Если введешь запрос в формате: сколько будет три целых пять десятых плюс 
-    сто миллиардов триста семьдесят миллионов восемьсот семьдесят три целых шестьсот 
-    восемьдесят три тысячных'''.format(update.message.chat.first_name, 
+and float numbers (enter for example 3.0+3=). Если введешь запрос в формате: сколько будет три целых пять десятых плюс 
+сто миллиардов триста семьдесят миллионов восемьсот семьдесят три целых шестьсот 
+восемьдесят три тысячных'''.format(update.message.chat.first_name, 
         '/start','/wordcount', '/planet', '/showcalc')
     logging.info('User {} selected /start'.format(update.message.chat.username))
     update.message.reply_text(welcome)
