@@ -5,6 +5,7 @@ import logging, re, ephem, parser, settings
 from datetime import date
 from telegram.ext import Updater, CommandHandler, MessageHandler, Filters, RegexHandler
 from telegram import Bot, KeyboardButton, ReplyKeyboardMarkup, ReplyKeyboardRemove
+from w2n_ru import word_to_num, russian_number_system
 
 logging.basicConfig(format = '%(asctime)s - %(name)s - %(levelname)s - %(message)s',
                     level = logging.INFO,
@@ -19,7 +20,9 @@ custom_keyboard = [[KeyboardButton('7'), KeyboardButton('8'), KeyboardButton('9'
 
 def start_bot(bot, update):
     welcome = '''Hi, {}! I understand the commands: {}, {}, {}. Also I can work like a calculator ({}) with integers 
-    and float numbers (enter for example 3.0+3=).'''.format(update.message.chat.first_name, 
+    and float numbers (enter for example 3.0+3=). Если введешь запрос в формате: сколько будет три целых пять десятых плюс 
+    сто миллиардов триста семьдесят миллионов восемьсот семьдесят три целых шестьсот 
+    восемьдесят три тысячных'''.format(update.message.chat.first_name, 
         '/start','/wordcount', '/planet', '/showcalc')
     logging.info('User {} selected /start'.format(update.message.chat.username))
     update.message.reply_text(welcome)
@@ -66,6 +69,26 @@ def button_calc(bot, update):
     else:
         pieces_list.append(update.message.text)
 
+def text_calc(bot, update):
+    user_expression = update.message.text
+    pattern = re.compile(r'^сколько будет (?P<num_sentence>.+)')
+    match = pattern.match(user_expression)
+    num_sentence = match.group('num_sentence')
+    error = 0
+    for num in num_sentence.split():
+        if num not in russian_number_system:
+            update.message.reply_text('Ошибка! Введите правильно запрос (например: сколько будет ноль целых пять десятых плюс семь целых сто пятьдесят тысячных)')
+            error += 1
+    if error == 0:
+        if 'плюс' in num_sentence:
+            update.message.reply_text(word_to_num(num_sentence.strip().split('плюс')[0]) + word_to_num(num_sentence.strip().split('плюс')[1]))
+        elif 'минус' in num_sentence:
+            update.message.reply_text(word_to_num(num_sentence.strip().split('минус')[0]) - word_to_num(num_sentence.strip().split('минус')[1]))
+        elif 'умножить на' in num_sentence:
+            update.message.reply_text(word_to_num(num_sentence.strip().split('умножить на')[0]) * word_to_num(num_sentence.strip().split('умножить на')[1]))
+        elif 'разделить на' in num_sentence:
+            update.message.reply_text(word_to_num(num_sentence.strip().split('разделить на')[0]) / word_to_num(num_sentence.strip().split('разделить на')[1]))
+
 def calc_reply(bot, update, user_expression):
     pattern = re.compile(r'(?P<first_num>\d+\.?\d*?)(?P<operator_sign>\D)(?P<second_num>\d+\.?\d*?)=')
     match = pattern.match(user_expression)
@@ -104,7 +127,7 @@ def main():
     upd.dispatcher.add_handler(CommandHandler('hidecalc', kb_hide))
     upd.dispatcher.add_handler(RegexHandler(r'\d+\.?\d*\D\d+\.?\d*=', calc))
     upd.dispatcher.add_handler(RegexHandler(r'/|\d|\+|\*|-|=|\.', button_calc))
-    
+    upd.dispatcher.add_handler(RegexHandler(r'^сколько будет .+', text_calc))
 
     upd.start_polling()
     upd.idle()
