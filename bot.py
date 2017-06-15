@@ -2,7 +2,7 @@
 # coding: utf-8
 
 import logging, re, ephem, parser, settings
-from datetime import date
+from datetime import date, datetime
 from telegram.ext import Updater, CommandHandler, MessageHandler, Filters, RegexHandler
 from telegram import Bot, KeyboardButton, ReplyKeyboardMarkup, ReplyKeyboardRemove
 from w2n_ru import word_to_num, russian_number_system
@@ -54,6 +54,12 @@ def planet_bot(bot, update, args):
             update.message.reply_text('Today {} is in {}.'.format(planet_name, planet_constellation))
         except (AttributeError, NameError):
             update.message.reply_text('Please, enter the correct name of the planet. Ex.: Moon, Jupiter, Mars etc.')
+
+def fullmoon_bot(bot, update):
+    user_expression = update.message.text
+    date_str = user_expression.split()[4].strip('?')
+    date_fullmoon = str(ephem.next_full_moon(date_str))
+    update.message.reply_text(date_fullmoon)
 
 def calc(bot, update):
     user_expression = update.message.text
@@ -128,6 +134,7 @@ def main():
     upd.dispatcher.add_handler(RegexHandler(r'\d+\.?\d*\D\d+\.?\d*=', calc))
     upd.dispatcher.add_handler(RegexHandler(r'/|\d|\+|\*|-|=|\.', button_calc))
     upd.dispatcher.add_handler(RegexHandler(r'^сколько будет .+', text_calc))
+    upd.dispatcher.add_handler(RegexHandler(r'^когда ближайшее полнолуние после.+\?', fullmoon_bot))
 
     upd.start_polling()
     upd.idle()
