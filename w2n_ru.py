@@ -1,3 +1,7 @@
+"""
+The library is taken from https://github.com/akshaynagpal/w2n and modified for the Russian language
+"""
+
 russian_number_system = {
     'ноль': 0,
     'один': 1,

@@ -103,15 +103,19 @@ def text_calc(bot, update):
         if num not in russian_number_system:
             update.message.reply_text('Ошибка! Введите правильно запрос (например: сколько будет ноль целых пять десятых плюс семь целых сто пятьдесят тысячных)')
             error += 1
-    if error == 0:
+    else:
+        sum_sentence = num_sentence.strip().split('плюс')
+        diff_sentence = num_sentence.strip().split('минус')
+        product_sentence = num_sentence.strip().split('умножить на')
+        quotient_sentence = num_sentence.strip().split('разделить на')
         if 'плюс' in num_sentence:
-            update.message.reply_text(word_to_num(num_sentence.strip().split('плюс')[0]) + word_to_num(num_sentence.strip().split('плюс')[1]))
+            update.message.reply_text(word_to_num(sum_sentence[0]) + word_to_num(sum_sentence[1]))
         elif 'минус' in num_sentence:
-            update.message.reply_text(word_to_num(num_sentence.strip().split('минус')[0]) - word_to_num(num_sentence.strip().split('минус')[1]))
+            update.message.reply_text(word_to_num(diff_sentence[0]) - word_to_num(diff_sentence[1]))
         elif 'умножить на' in num_sentence:
-            update.message.reply_text(word_to_num(num_sentence.strip().split('умножить на')[0]) * word_to_num(num_sentence.strip().split('умножить на')[1]))
+            update.message.reply_text(word_to_num(product_sentence[0]) * word_to_num(product_sentence[1]))
         elif 'разделить на' in num_sentence:
-            update.message.reply_text(word_to_num(num_sentence.strip().split('разделить на')[0]) / word_to_num(num_sentence.strip().split('разделить на')[1]))
+            update.message.reply_text(word_to_num(quotient_sentence[0]) / word_to_num(quotient_sentence[1]))
 
 def calc_reply(bot, update, user_expression):
     pattern = re.compile(r'(?P<first_num>\d+\.?\d*?)(?P<operator_sign>\D)(?P<second_num>\d+\.?\d*?)=')
