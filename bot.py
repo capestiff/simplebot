@@ -98,7 +98,6 @@ def text_calc(bot, update):
     pattern = re.compile(r'^сколько будет (?P<num_sentence>.+)')
     match = pattern.match(user_expression)
     num_sentence = match.group('num_sentence')
-    error = 0
     for num in num_sentence.split():
         if num not in russian_number_system:
             update.message.reply_text('Ошибка! Введите правильно запрос (например: сколько будет ноль целых пять десятых плюс семь целых сто пятьдесят тысячных)')
