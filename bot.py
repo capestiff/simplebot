@@ -102,7 +102,7 @@ def text_calc(bot, update):
     for num in num_sentence.split():
         if num not in russian_number_system:
             update.message.reply_text('Ошибка! Введите правильно запрос (например: сколько будет ноль целых пять десятых плюс семь целых сто пятьдесят тысячных)')
-            error += 1
+            break
     else:
         sum_sentence = num_sentence.strip().split('плюс')
         diff_sentence = num_sentence.strip().split('минус')
