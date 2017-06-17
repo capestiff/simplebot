@@ -1,7 +1,8 @@
 #!/usr/local/bin/python
 # coding: utf-8
 
-import logging, re, ephem, parser, settings
+import logging, re, ephem, parser, settings, csv
+from city_list import city_list
 from datetime import date, datetime
 from telegram.ext import Updater, CommandHandler, MessageHandler, Filters, RegexHandler
 from telegram import Bot, KeyboardButton, ReplyKeyboardMarkup, ReplyKeyboardRemove
@@ -17,6 +18,23 @@ custom_keyboard = [[KeyboardButton('7'), KeyboardButton('8'), KeyboardButton('9'
                    [KeyboardButton('4'), KeyboardButton('5'), KeyboardButton('6'), KeyboardButton('-')],
                    [KeyboardButton('1'), KeyboardButton('2'), KeyboardButton('3'), KeyboardButton('*')],
                    [KeyboardButton('.'), KeyboardButton('0'), KeyboardButton('/'), KeyboardButton('=')]]
+
+def goroda_bot(bot, update, args):
+    city_name = ' '.join(args)
+    if args == []:
+        update.message.reply_text('Введите /goroda название города')
+    elif city_name in city_list:
+        for city in city_list:
+            if city_name[-1].lower() == city[0].lower():
+                bot_city = city_list.pop(city_list.index(city))
+                update.message.reply_text('{}, ваш ход.'.format(bot_city))
+                city_list.remove(city)
+            elif city_name[-2].lower() == city[0].lower():
+                bot_city = city_list.pop(city_list.index(city))
+                update.message.reply_text('{}, ваш ход.'.format(bot_city))
+                city_list.remove(city)
+    else:
+        update.message.reply_text('Ошибка! Введите название города, который еще не называли и который существует.')
 
 def start_bot(bot, update):
     welcome = '''Hi, {}! I understand the commands: {}, {}, {}. Also I can work like a calculator ({}) with integers 
@@ -131,6 +149,7 @@ def main():
     upd.dispatcher.add_handler(CommandHandler('planet', planet_bot, pass_args=True))
     upd.dispatcher.add_handler(CommandHandler('showcalc', keyboard))
     upd.dispatcher.add_handler(CommandHandler('hidecalc', kb_hide))
+    upd.dispatcher.add_handler(CommandHandler('goroda', goroda_bot, pass_args=True))
     upd.dispatcher.add_handler(RegexHandler(r'\d+\.?\d*\D\d+\.?\d*=', calc))
     upd.dispatcher.add_handler(RegexHandler(r'/|\d|\+|\*|-|=|\.', button_calc))
     upd.dispatcher.add_handler(RegexHandler(r'^сколько будет .+', text_calc))
