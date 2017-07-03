@@ -1,6 +1,6 @@
 # Simple Bot
 
-My first Telegram bot that has the next functionalities:
+My first Telegram bot that has the next functionality:
 * digit calculator (expression and button input)
 * calculator with verbal input in Russian
 * play 'Goroda' game
