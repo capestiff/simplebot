@@ -1,6 +1,12 @@
 # Simple Bot
 
-My first Telegram bot
+My first Telegram bot that has the next functionalities:
+* digit calculator (expression and button input)
+* calculator in Russian
+* play 'Goroda' game
+* output which constellation is a planet today
+* output the date of the next fullmoon
+* count the words in the sentence
 
 ## Getting Started
 
