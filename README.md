@@ -2,7 +2,7 @@
 
 My first Telegram bot that has the next functionalities:
 * digit calculator (expression and button input)
-* calculator in Russian
+* calculator with verbal input in Russian
 * play 'Goroda' game
 * output which constellation is a planet today
 * output the date of the next fullmoon
